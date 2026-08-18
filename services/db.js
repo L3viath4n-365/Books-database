@@ -3,20 +3,25 @@ import dotenv from 'dotenv';
 
 dotenv.config();
 
-const db = new pg.Pool();
+// Render requires SSL for PostgreSQL connections in production
+const db = new pg.Pool({
+  connectionString: process.env.DATABASE_URL,
+  ssl: process.env.NODE_ENV === 'production' ? { rejectUnauthorized: false } : false
+});
 
-db.connect(async (err, client, release) => {
-  if (err) {
-    console.error('Connection error:', err.stack);
-    return;
-  }
-
+const initDB = async () => {
+  let client;
   try {
+    client = await db.connect();
     console.log('Connected to PostgreSQL database');
 
     const initQuery = `
-      CREATE TABLE IF NOT EXISTS items (
-        id SERIAL PRIMARY KEY,
+      DROP TABLE items;
+      
+      CREATE EXTENSION IF NOT EXISTS "pgcrypto";
+
+      CREATE TABLE IF NOT EXISTS books (
+        id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
         title VARCHAR(255) NOT NULL,
         author VARCHAR(255) NOT NULL,
         rating INTEGER CHECK (rating >= 1 AND rating <= 5),
@@ -24,6 +29,8 @@ db.connect(async (err, client, release) => {
         notes TEXT,
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
       );
+
+      ALTER TABLE books ADD COLUMN IF NOT EXISTS created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP;
     `;
 
     await client.query(initQuery);
@@ -31,8 +38,10 @@ db.connect(async (err, client, release) => {
   } catch (err) {
     console.error('Initialization error:', err.message);
   } finally {
-    release();
+    if (client) client.release();
   }
-});
+};
+
+initDB();
 
 export default db;

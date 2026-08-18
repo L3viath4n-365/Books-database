@@ -174,7 +174,7 @@ CREATE DATABASE books_database;
 \c books_database;
 
 CREATE TABLE IF NOT EXISTS books (
-  id SERIAL PRIMARY KEY,
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   title VARCHAR(255) NOT NULL,
   author VARCHAR(255) NOT NULL,
   rating INTEGER CHECK (rating >= 1 AND rating <= 5),

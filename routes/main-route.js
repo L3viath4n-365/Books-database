@@ -9,7 +9,7 @@ router.get('/', (req, res) => {
 
 router.get('/books', async (req, res, next) => {
   try {
-    const result = await db.query('SELECT * FROM items ORDER BY created_at DESC');
+    const result = await db.query('SELECT * FROM books ORDER BY created_at DESC');
     res.render('books/book-list', { 
       title: 'My Books', 
       books: result.rows 
@@ -27,7 +27,7 @@ router.post('/books', async (req, res, next) => {
   try {
     const { title, author, rating, status, notes } = req.body;
     const result = await db.query(
-      'INSERT INTO items (title, author, rating, status, notes) VALUES ($1, $2, $3, $4, $5) RETURNING *',
+      'INSERT INTO books (title, author, rating, status, notes) VALUES ($1, $2, $3, $4, $5) RETURNING *',
       [title, author, rating, status, notes]
     );
     res.redirect('/books');
@@ -39,7 +39,7 @@ router.post('/books', async (req, res, next) => {
 router.get('/books/:id/edit', async (req, res, next) => {
   try {
     const { id } = req.params;
-    const result = await db.query('SELECT * FROM items WHERE id = $1', [id]);
+    const result = await db.query('SELECT * FROM books WHERE id = $1', [id]);
     if (result.rows.length === 0) {
       const error = new Error('Book not found');
       error.status = 404;
@@ -56,7 +56,7 @@ router.put('/books/:id', async (req, res, next) => {
     const { id } = req.params;
     const { title, author, rating, status, notes } = req.body;
     const result = await db.query(
-      'UPDATE items SET title = $1, author = $2, rating = $3, status = $4, notes = $5 WHERE id = $6 RETURNING *',
+      'UPDATE books SET title = $1, author = $2, rating = $3, status = $4, notes = $5 WHERE id = $6 RETURNING *',
       [title, author, rating, status, notes, id]
     );
     res.redirect('/books');
@@ -68,7 +68,7 @@ router.put('/books/:id', async (req, res, next) => {
 router.delete('/books/:id', async (req, res, next) => {
   try {
     const { id } = req.params;
-    await db.query('DELETE FROM items WHERE id = $1', [id]);
+    await db.query('DELETE FROM books WHERE id = $1', [id]);
     res.redirect('/books');
   } catch (err) {
     next(err);

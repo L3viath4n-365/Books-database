@@ -1,0 +1,55 @@
+<%
+  const bookList = typeof books !== 'undefined' ? books : [];
+%>
+
+<section class="container">
+  <div class="page-header">
+    <h1 class="page-title">My Books</h1>
+    <a href="/books/new" class="btn btn-primary">Add a Book</a>
+  </div>
+
+  <% if (bookList.length === 0) { %>
+    <div class="empty-state">
+      <p>No books saved yet. Start by adding one!</p>
+    </div>
+  <% } else { %>
+    <section class="book-grid" aria-label="Book list">
+      <% bookList.forEach(book => { %>
+        <%
+          const statusClass = book.status === 'Read'
+            ? 'badge-read'
+            : book.status === 'To Read'
+              ? 'badge-to-read'
+              : 'badge-want';
+        %>
+
+        <article class="book-card">
+          <div class="book-card-body">
+            <h2 class="book-title"><%= book.title %></h2>
+            <p class="book-author">by <%= book.author %></p>
+
+            <p class="book-rating" aria-label="Rating: <%= book.rating %> out of 5">
+              <span aria-hidden="true">★</span> <%= book.rating %>/5
+            </p>
+
+            <span class="badge-status <%= statusClass %>">
+              <%= book.status %>
+            </span>
+
+            <% if (book.notes) { %>
+              <p class="book-notes"><%= book.notes %></p>
+            <% } %>
+          </div>
+
+          <div class="book-actions">
+            <a href="/books/<%= book.id %>/edit" class="btn btn-secondary">Edit</a>
+
+            <form action="/books/<%= book.id %>?_method=DELETE" method="POST" class="delete-form">
+              <button type="submit" class="btn btn-danger">Delete</button>
+            </form>
+          </div>
+        </article>
+      <% }) %>
+    </section>
+  <% } %>
+</section>

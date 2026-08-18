@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <% const pageTitle = typeof title !== 'undefined' && title ? title : 'Book Saver'; %>
+  <title><%= pageTitle %></title>
+
+  <!--
+    IMPORTANT ORDER:
+    Baseline template.css loads FIRST.
+    Tailwind CSS loads SECOND.
+    Equal-specificity Tailwind utilities will override baseline component styles.
+  -->
+  <link rel="stylesheet" href="/css/template.css">
+  <link rel="stylesheet" href="/src/output.css">
+</head>
+<body class="app-shell bg-yellow-200">
+  <%- include('partials/header.ejs') %>
+
+  <main class="app-main">
+    <%- body %>
+  </main>
+
+  <%- include('partials/footer.ejs') %>
+</body>
+</html>

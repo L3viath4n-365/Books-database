@@ -1,0 +1,70 @@
+<section class="container mx-auto px-4 py-8 flex flex-col items-center justify-between">
+  <div class="flex items-center justify-between mb-8 w-full max-w-2xl">
+    <h1 class="text-3xl font-bold">Add a New Book</h1>
+    <a href="/books" class="btn btn-secondary">Back to Books</a>
+  </div>
+
+  <form action="/books" method="POST" class="bg-white shadow-md rounded-lg p-6 max-w-2xl w-full">
+    <div class="mb-4">
+      <label for="title" class="block text-sm font-semibold mb-2">Title *</label>
+      <input 
+        type="text" 
+        id="title" 
+        name="title" 
+        class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" 
+        placeholder="Enter book title" 
+        required
+      >
+    </div>
+
+    <div class="mb-4">
+      <label for="author" class="block text-sm font-semibold mb-2">Author *</label>
+      <input 
+        type="text" 
+        id="author" 
+        name="author" 
+        class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" 
+        placeholder="Enter author name" 
+        required
+      >
+    </div>
+
+    <div class="mb-4">
+      <label for="rating" class="block text-sm font-semibold mb-2">Rating</label>
+      <select id="rating" name="rating" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+        <option value="">Select rating</option>
+        <option value="1">1 - Poor</option>
+        <option value="2">2 - Fair</option>
+        <option value="3">3 - Good</option>
+        <option value="4">4 - Very Good</option>
+        <option value="5">5 - Excellent</option>
+      </select>
+    </div>
+
+    <div class="mb-4">
+      <label for="status" class="block text-sm font-semibold mb-2">Status *</label>
+      <select id="status" name="status" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+        <option value="">Select status</option>
+        <option value="Read">Read</option>
+        <option value="To Read">To Read</option>
+        <option value="Currently Reading">Currently Reading</option>
+      </select>
+    </div>
+
+    <div class="mb-6">
+      <label for="notes" class="block text-sm font-semibold mb-2">Notes</label>
+      <textarea 
+        id="notes" 
+        name="notes" 
+        rows="6" 
+        class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" 
+        placeholder="Add your thoughts, key takeaways, or memorable quotes..."
+      ></textarea>
+    </div>
+
+    <div class="flex gap-4">
+      <button type="submit" class="btn btn-primary">Save Book</button>
+      <a href="/books" class="btn btn-secondary">Cancel</a>
+    </div>
+  </form>
+</section>
